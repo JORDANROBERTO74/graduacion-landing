@@ -52,8 +52,8 @@ function Song({ onNext }: { onNext: () => void }) {
 
   return (
     <section className="song-section section-shell" aria-labelledby="song-title">
-      <p className="eyebrow">PARA ESCUCHAR JUNTOS</p>
-      <h2 id="song-title" className="section-title">La canción<br /><em>de todos estos años</em></h2>
+      <p className="eyebrow">PARA REÍR JUNTOS</p>
+      <h2 id="song-title" className="section-title">Un momento<br /><em>de todos estos años</em></h2>
       <div className={`song-swap ${videoRevealed ? 'is-video' : ''}`}>
         <AnimatePresence mode="popLayout" initial={false}>
           {!videoRevealed && (
@@ -62,7 +62,7 @@ function Song({ onNext }: { onNext: () => void }) {
               key="cassette"
               className="cassette"
               onClick={() => setVideoRevealed(true)}
-              aria-label="Ver el video: Nuestro himno"
+              aria-label="Ver el video: nuestro momento"
               aria-expanded={false}
               aria-controls="song-video"
               initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotate: -6 }}
@@ -71,7 +71,7 @@ function Song({ onNext }: { onNext: () => void }) {
               transition={{ duration: reduced ? 0.12 : 0.42, ease: [0.23, 1, 0.32, 1] }}
               whileTap={reduced ? undefined : { scale: 0.98 }}
             >
-              <span className="cassette-label"><span>lado A · 2026</span><strong>Nuestro himno</strong></span>
+              <span className="cassette-label"><span>lado A · 2026</span><strong>Nuestro momento</strong></span>
               <span className="cassette-window"><i /><span /><i /></span>
               <span className="cassette-bottom"><span>PLAY • REPEAT</span><span>♥ AMIGA ♥</span></span>
             </motion.button>
@@ -97,7 +97,7 @@ function Song({ onNext }: { onNext: () => void }) {
           )}
         </AnimatePresence>
       </div>
-      <p className="cassette-prompt">{videoRevealed ? 'Nuestro himno, para escuchar juntos' : 'Toca el casete para escuchar el himno'}</p>
+      <p className="cassette-prompt">{videoRevealed ? 'Nuestro momento, para recordar juntos' : 'Toca el casete para revivir el momento'}</p>
       {videoRevealed && (
         <button type="button" className="cassette-revert" onClick={() => setVideoRevealed(false)}>
           <CassetteTape size={15} aria-hidden="true" /> Volver al casete
@@ -249,7 +249,7 @@ function SceneContinue({ label, onClick }: { label: string; onClick: () => void 
 }
 
 const sceneCount = 5
-const sceneNames = ['Portada', 'La canción', 'El tiempo', 'Retrato', 'La carta']
+const sceneNames = ['Portada', 'El momento', 'El tiempo', 'Retrato', 'La carta']
 
 export default function GraduationLetter() {
   const [scene, setScene] = useState(0)
