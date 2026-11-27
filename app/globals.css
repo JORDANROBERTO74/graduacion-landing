@@ -110,7 +110,7 @@ button:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 4px
 .mark-heart { right: 17%; bottom: 25%; font-size: 1.25rem; animation-delay: -4s; }
 @keyframes drift { from { transform: translateY(-4px) rotate(-5deg); } to { transform: translateY(6px) rotate(6deg); } }
 
-.portrait-frame { position: relative; width: 100%; height: clamp(11rem, 42dvh, 26rem); margin: 0; overflow: hidden; background: #e9ddcf; flex: 0 0 auto; }
+.portrait-frame { position: relative; width: 100%; height: clamp(13rem, 50dvh, 30rem); margin: 0; overflow: hidden; background: #e9ddcf; flex: 0 0 auto; }
 .portrait-frame::before,.portrait-frame::after { position: absolute; z-index: 1; right: 0; left: 0; height: 16%; content: ''; pointer-events: none; }
 .portrait-frame::before { top: 0; background: linear-gradient(var(--paper), transparent); }
 .portrait-frame::after { bottom: 0; height: 24%; background: linear-gradient(transparent, var(--paper)); }
