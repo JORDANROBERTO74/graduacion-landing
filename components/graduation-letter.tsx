@@ -7,7 +7,6 @@ import { ArrowLeft, ArrowRight, CassetteTape, ChevronDown, Clock3, Stethoscope, 
 /* Una sola fuente de verdad para la ceremonia: 27 de noviembre de 2026, 9:00 a. m. */
 const CEREMONY = { year: 2026, month: 10, day: 27, hour: 9, minute: 0 } as const
 const CEREMONY_DATE = new Date(CEREMONY.year, CEREMONY.month, CEREMONY.day, CEREMONY.hour, CEREMONY.minute, 0)
-const CEREMONY_ISO = '2026-11-27T09:00:00'
 const CEREMONY_SHORT = '27.11.2026 · 09:00'
 const CEREMONY_LABEL = '27 Nov 2026'
 const CEREMONY_LONG = '27 de noviembre de 2026 · 9:00 a. m.'
@@ -228,11 +227,13 @@ function Dedication({ onRestart }: { onRestart: () => void }) {
       </motion.button>
       <AnimatePresence initial={false}>
         {opened && <motion.article className="dedication-card" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: reduced ? 0.15 : 0.28 }}>
-          <p className="eyebrow">MI QUERIDA AMIGA</p>
-          <p className="dedication-copy">Nos conocimos cuando la carrera todavía era una promesa larga, y te vi convertirte en esto: alguien que estudia de noche, que llega cansada y aun así vuelve al hospital al día siguiente. Nunca te escuché quejarte del esfuerzo; solo de no tener más horas para aprender.</p>
-          <p className="dedication-copy">Hoy, <time dateTime={CEREMONY_ISO}>{CEREMONY_LONG}</time>, te llamarán doctora. Y aunque suene a título, para mí es la prueba de todo lo que sostuviste en silencio: los exámenes que te quitaron el sueño, las guardias que te cambiaron el humor y los planes que cancelamos sin rencor.</p>
-          <p className="dedication-copy">Que tu conocimiento sane, que tu humanidad consuele y que nunca te acostumbres al dolor ajeno. Y cuando la carrera pese, acuérdate de que aquí hay un amigo que sigue viéndote igual que el primer día: brillante, terca y un poco insoportable.</p>
-          <p className="letter-signoff">Con cariño de siempre,<br /><strong>Tu amigo</strong></p>
+          <p className="letter-greeting">Lo lograste, hermana! ❤️‍🩹</p>
+          <p className="dedication-copy">Parece que fue ayer cuando comenzamos el internado, sin imaginar que esos nueve meses terminarían regalándome una de las amistades más bonitas que tengo.</p>
+          <p className="dedication-copy">Entre tantas experiencias, risas, momentos buenos y no tan buenos, terminamos convirtiéndonos en uña y mugre, hasta llegar a considerarnos hermanos. Y qué bonito es saber que, más allá de haber compartido una etapa de nuestras vidas, nos llevamos una amistad que espero conservar siempre.</p>
+          <p className="dedication-copy">Hoy quiero que sepas que nunca dudé de ti. Siempre confié en que ibas a llegar a este momento y que tarde o temprano vería cumplida esta meta que tanto te propusiste. Y aquí estás, demostrando que todo el esfuerzo, los sacrificios y las largas jornadas valieron la pena.</p>
+          <p className="dedication-copy">Me siento muy orgulloso de ti y de la gran profesional en la que te estás convirtiendo. Te quiero muchísimo, hermana, y deseo de corazón que este sea apenas el comienzo de una vida llena de éxitos y oportunidades.</p>
+          <p className="dedication-copy">¡Felicidades, doctora! Te lo mereces todo. Y nunca olvides que aquí tienes un hermano que siempre va a celebrar tus logros como si fueran propios. ❤️</p>
+          <p className="letter-signoff">Con cariño de siempre,<br /><strong>Tu hermano</strong></p>
           <button className="primary-pill celebrate-button" onClick={onRestart}>Volver a vivirlo <ArrowRight size={16} aria-hidden="true" /></button>
         </motion.article>}
       </AnimatePresence>

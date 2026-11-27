@@ -192,8 +192,11 @@ button:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 4px
 .letter-section.is-open .envelope-seal { opacity: 0; }
 .letter-section.is-open .envelope-prompt { opacity: 0; }
 .dedication-card { position: relative; z-index: 4; margin: var(--space-2) 0 0; padding: var(--space-4) var(--space-3) var(--space-3); border: 1px solid #e3d4bd; border-radius: .7rem; background: #fbf6ed; box-shadow: 0 16px 35px rgba(82,60,39,.1); text-align: left; }
+/* La carta es más alta que el viewport: el scroll vive dentro de la tarjeta. */
+.letter-section.is-open .dedication-card { max-height: 72dvh; overflow-y: auto; scrollbar-width: thin; overscroll-behavior: contain; }
 .dedication-card .eyebrow { text-align: center; }
 .dedication-copy { margin: 0 0 var(--space-3); color: #65564b; font-family: 'Playfair Display', Georgia, serif; font-size: .91rem; line-height: 1.8; text-wrap: pretty; }
+.letter-greeting { margin: 0 0 var(--space-3); color: var(--terracotta); font-family: 'Playfair Display', Georgia, serif; font-size: 1.12rem; font-style: italic; line-height: 1.6; text-align: center; }
 .dedication-copy time { color: var(--terracotta); font-style: italic; }
 .letter-signoff { margin: var(--space-4) 0 var(--space-4); color: #77675a; font-family: 'Playfair Display', Georgia, serif; font-size: .92rem; font-style: italic; line-height: 1.7; text-align: center; }
 .letter-signoff strong { color: var(--terracotta); font-size: 1.1rem; font-weight: 400; }
