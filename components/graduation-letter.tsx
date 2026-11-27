@@ -9,7 +9,7 @@ const CEREMONY = { year: 2026, month: 10, day: 27, hour: 9, minute: 0 } as const
 const CEREMONY_DATE = new Date(CEREMONY.year, CEREMONY.month, CEREMONY.day, CEREMONY.hour, CEREMONY.minute, 0)
 const CEREMONY_ISO = '2026-11-27T09:00:00'
 const CEREMONY_SHORT = '27.11.2026 · 09:00'
-const CEREMONY_ROMAN = '27 · XI · MMXXVI'
+const CEREMONY_LABEL = '27 Nov 2026'
 const CEREMONY_LONG = '27 de noviembre de 2026 · 9:00 a. m.'
 
 function Cover({ onNext }: { onNext: () => void }) {
@@ -19,7 +19,7 @@ function Cover({ onNext }: { onNext: () => void }) {
       <div className="cover-emblem" aria-hidden="true">
         <div className="emblem-ring"><Stethoscope size={30} strokeWidth={1.15} /><span className="emblem-star">✳</span></div>
       </div>
-      <p className="eyebrow">{CEREMONY_ROMAN}</p>
+      <p className="eyebrow">{CEREMONY_LABEL}</p>
       <h1 id="cover-title" className="display-title">Para la amiga<br />que hoy será doctora</h1>
       <p className="cover-copy">Años de guardias, apuntes y cafés<br />que no alcanzaron. Hoy te titulas.</p>
       <button className="primary-pill" onClick={onNext}>Abrir la carta <ArrowRight size={16} aria-hidden="true" /></button>
