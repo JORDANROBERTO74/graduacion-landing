@@ -36,7 +36,7 @@ function Portrait({ onNext }: { onNext: () => void }) {
     <section id="retrato" className="portrait-section section-shell">
       <p className="eyebrow date-label">{CEREMONY_LONG}</p>
       <figure className="portrait-frame">
-        <img src="/sofia-graduation.png" alt="Sofía, recién graduada de Medicina, con su bata blanca, estetoscopio y birrete" width={900} height={1200} fetchPriority="high" />
+        <img src="/quirofano.jpeg" alt="Sofía y su amigo con bata quirúrgica y mascarilla en el quirófano" width={1600} height={1200} fetchPriority="high" />
         <span className="portrait-number">01 / 05</span>
       </figure>
       <p className="photo-caption">La bata que soñaste antes<br />de saber cuánto costaría</p>
@@ -86,12 +86,12 @@ function Song({ onNext }: { onNext: () => void }) {
               exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10 }}
               transition={{ duration: reduced ? 0.12 : 0.42, ease: [0.23, 1, 0.32, 1], delay: reduced ? 0 : 0.12 }}
             >
-              <iframe
-                src="https://www.youtube-nocookie.com/embed/ZbZSe6N_BXs?rel=0"
-                title="Happy, la canción que celebramos el día de la titulación de Sofía"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
+              <video
+                src="/baile.mp4"
+                aria-label="Video del baile"
+                controls
+                playsInline
+                preload="metadata"
               />
             </motion.div>
           )}
