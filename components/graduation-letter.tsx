@@ -1,0 +1,403 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { ArrowLeft, ArrowRight, AudioLines, CassetteTape, ChevronDown, Clock3, Pause, Play, Stethoscope, Heart, Sparkles } from 'lucide-react'
+
+/* Una sola fuente de verdad para la ceremonia: 27 de noviembre de 2026, 9:00 a. m. */
+const CEREMONY = { year: 2026, month: 10, day: 27, hour: 9, minute: 0 } as const
+const CEREMONY_DATE = new Date(CEREMONY.year, CEREMONY.month, CEREMONY.day, CEREMONY.hour, CEREMONY.minute, 0)
+const CEREMONY_ISO = '2026-11-27T09:00:00'
+const CEREMONY_SHORT = '27.11.2026 · 09:00'
+const CEREMONY_ROMAN = '27 · XI · MMXXVI'
+const CEREMONY_LONG = '27 de noviembre de 2026 · 9:00 a. m.'
+
+const memories = [
+  { src: '/sofia-internship.png', alt: 'Sofía durante su internado rotatorio', caption: 'Internado rotatorio' },
+  { src: '/sofia-defense.png', alt: 'Sofía en la defensa de grado', caption: 'Defensa de grado' },
+  { src: '/sofia-whitecoat.png', alt: 'Sofía con su primera bata blanca', caption: 'La bata blanca' },
+]
+
+const confetti = Array.from({ length: 22 }, (_, index) => ({
+  left: `${(index * 37 + 11) % 100}%`,
+  delay: `${(index % 8) * 0.65}s`,
+  duration: `${7 + (index % 5)}s`,
+  size: `${3 + (index % 3)}px`,
+}))
+
+function Cover({ onNext }: { onNext: () => void }) {
+  return (
+    <section className="cover section-shell" aria-labelledby="cover-title">
+      <div className="cover-topline"><span>UNA CARTA</span><i /><span>MEDICINA</span></div>
+      <div className="cover-emblem" aria-hidden="true">
+        <div className="emblem-ring"><Stethoscope size={30} strokeWidth={1.15} /><span className="emblem-star">✳</span></div>
+      </div>
+      <p className="eyebrow">{CEREMONY_ROMAN}</p>
+      <h1 id="cover-title" className="display-title">Para la amiga<br />que hoy será doctora</h1>
+      <p className="cover-copy">Años de guardias, apuntes y cafés<br />que no alcanzaron. Hoy te titulas.</p>
+      <button className="primary-pill" onClick={onNext}>Abrir la carta <ArrowRight size={16} aria-hidden="true" /></button>
+      <div className="cover-signature"><span>con orgullo y cariño</span><strong>de tu amigo</strong></div>
+      <span className="float-mark mark-cap" aria-hidden="true">✧</span>
+      <span className="float-mark mark-star" aria-hidden="true">✳</span>
+      <span className="float-mark mark-heart" aria-hidden="true">♡</span>
+    </section>
+  )
+}
+
+function Portrait({ onNext }: { onNext: () => void }) {
+  return (
+    <section id="retrato" className="portrait-section section-shell">
+      <p className="eyebrow date-label">{CEREMONY_LONG}</p>
+      <figure className="portrait-frame">
+        <img src="/sofia-graduation.png" alt="Sofía, recién graduada de Medicina, con su bata blanca, estetoscopio y birrete" width={900} height={1200} fetchPriority="high" />
+        <span className="portrait-number">01 / 07</span>
+      </figure>
+      <p className="photo-caption">La bata que soñaste antes<br />de saber cuánto costaría</p>
+      <span className="tiny-rule" aria-hidden="true" />
+      <SceneContinue label="Seguir la historia" onClick={onNext} />
+    </section>
+  )
+}
+
+function Song({ onNext }: { onNext: () => void }) {
+  const [videoRevealed, setVideoRevealed] = useState(false)
+  const reduced = useReducedMotion()
+
+  return (
+    <section className="song-section section-shell" aria-labelledby="song-title">
+      <p className="eyebrow">PARA ESCUCHAR JUNTOS</p>
+      <h2 id="song-title" className="section-title">La canción<br /><em>de todos estos años</em></h2>
+      <div className={`song-swap ${videoRevealed ? 'is-video' : ''}`}>
+        <AnimatePresence mode="popLayout" initial={false}>
+          {!videoRevealed && (
+            <motion.button
+              type="button"
+              key="cassette"
+              className="cassette"
+              onClick={() => setVideoRevealed(true)}
+              aria-label="Ver el video: Nuestro himno"
+              aria-expanded={false}
+              aria-controls="song-video"
+              initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotate: -6 }}
+              animate={{ opacity: 1, scale: 1, rotate: -3 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.92, rotate: 2, filter: 'blur(4px)' }}
+              transition={{ duration: reduced ? 0.12 : 0.42, ease: [0.23, 1, 0.32, 1] }}
+              whileTap={reduced ? undefined : { scale: 0.98 }}
+            >
+              <span className="cassette-label"><span>lado A · 2026</span><strong>Nuestro himno</strong></span>
+              <span className="cassette-window"><i /><span /><i /></span>
+              <span className="cassette-bottom"><span>PLAY • REPEAT</span><span>♥ AMIGA ♥</span></span>
+            </motion.button>
+          )}
+          {videoRevealed && (
+            <motion.div
+              key="video"
+              id="song-video"
+              className="video-wrap"
+              initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94, y: 10 }}
+              transition={{ duration: reduced ? 0.12 : 0.42, ease: [0.23, 1, 0.32, 1], delay: reduced ? 0 : 0.12 }}
+            >
+              <iframe
+                src="https://www.youtube-nocookie.com/embed/ZbZSe6N_BXs?rel=0"
+                title="Happy, la canción que celebramos el día de la titulación de Sofía"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+      <p className="cassette-prompt">{videoRevealed ? 'Nuestro himno, para escuchar juntos' : 'Toca el casete para escuchar el himno'}</p>
+      {videoRevealed && (
+        <button type="button" className="cassette-revert" onClick={() => setVideoRevealed(false)}>
+          <CassetteTape size={15} aria-hidden="true" /> Volver al casete
+        </button>
+      )}
+      <SceneContinue label="Seguir celebrando" onClick={onNext} />
+    </section>
+  )
+}
+
+function getElapsedParts(start: Date, now: Date) {
+  if (now < start) return { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 }
+  let years = now.getFullYear() - start.getFullYear()
+  let months = now.getMonth() - start.getMonth()
+  let anchor = new Date(start)
+  anchor.setFullYear(start.getFullYear() + years)
+  if (anchor > now) { years -= 1; anchor = new Date(start); anchor.setFullYear(start.getFullYear() + years) }
+  months = now.getMonth() - anchor.getMonth() + (now.getFullYear() - anchor.getFullYear()) * 12
+  anchor.setMonth(anchor.getMonth() + months)
+  if (anchor > now) { months -= 1; anchor = new Date(start); anchor.setFullYear(start.getFullYear() + years); anchor.setMonth(anchor.getMonth() + months) }
+  const remaining = Math.max(0, now.getTime() - anchor.getTime())
+  const days = Math.floor(remaining / 86_400_000)
+  const hours = Math.floor((remaining % 86_400_000) / 3_600_000)
+  const minutes = Math.floor((remaining % 3_600_000) / 60_000)
+  const seconds = Math.floor((remaining % 60_000) / 1000)
+  return { years, months, days, hours, minutes, seconds }
+}
+
+type CountUnit = { label: string; value: number }
+
+/**
+ * Devuelve SOLO las unidades necesarias para que se lea de un vistazo.
+ * La regla es "pinta la magnitud y la precisión inmediatamente menor":
+ *   < 24 h  → horas, minutos, segundos
+ *   < 1 día → igual
+ *   < 1 año → días, horas, minutos   (sin segundos: no aportan nada a esa escala)
+ *   ≥ 1 año → años, meses, días
+ * Así nunca se ven seis bloques a la vez, y el que más avanza manda.
+ */
+function selectUnits(start: Date, now: Date): { units: CountUnit[]; scale: string } {
+  if (now < start) {
+    return { units: [{ label: 'H', value: 0 }, { label: 'MIN', value: 0 }, { label: 'S', value: 0 }], scale: 'horas' }
+  }
+  const parts = getElapsedParts(start, now)
+  const totalHours = Math.floor((now.getTime() - start.getTime()) / 3_600_000)
+
+  if (totalHours < 24) {
+    return {
+      units: [{ label: 'H', value: parts.hours }, { label: 'MIN', value: parts.minutes }, { label: 'S', value: parts.seconds }],
+      scale: 'horas',
+    }
+  }
+  if (parts.years === 0) {
+    return {
+      units: [{ label: 'DÍAS', value: parts.days }, { label: 'H', value: parts.hours }, { label: 'MIN', value: parts.minutes }],
+      scale: 'días',
+    }
+  }
+  // A partir de un año: años y meses son los que realmente cambian. Los días
+  // solo entran si son muchos, para no mostrar un "0" que no informa nada.
+  const units: CountUnit[] = [{ label: 'AÑOS', value: parts.years }, { label: 'MESES', value: parts.months }]
+  if (parts.days > 0) units.push({ label: 'DÍAS', value: parts.days })
+  return { units, scale: 'años' }
+}
+
+function MilestoneClock({ onNext }: { onNext: () => void }) {
+  const [now, setNow] = useState<Date | null>(null)
+  const reduced = useReducedMotion()
+  useEffect(() => {
+    setNow(new Date())
+    const timer = window.setInterval(() => setNow(new Date()), 1000)
+    return () => window.clearInterval(timer)
+  }, [])
+  const { units, scale } = now
+    ? selectUnits(CEREMONY_DATE, now)
+    : { units: [{ label: 'H', value: 0 }, { label: 'MIN', value: 0 }, { label: 'S', value: 0 }], scale: 'horas' }
+
+  return (
+    <section className="milestone-section section-shell" aria-labelledby="milestone-title">
+      <div className="clock-icon" aria-hidden="true">
+        <Clock3 size={26} strokeWidth={1.25} />
+      </div>
+      <p className="eyebrow">EL TIEMPO MÁS BONITO</p>
+      <h2 id="milestone-title" className="section-title small-title">Desde ese instante,<br /><em>el mundo tiene una doctora más</em></h2>
+      <div className="count-card">
+        <p className="count-heading">siendo Dra. en Medicina</p>
+        <div className={`count-grid count-${scale}`} aria-label="Tiempo desde la titulación" role="timer">
+          <AnimatePresence mode="popLayout" initial={false}>
+            {units.map(({ label, value }) => (
+              <motion.div
+                className="count-unit"
+                key={label}
+                layout
+                initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.96 }}
+                transition={{ duration: reduced ? 0.1 : 0.26, ease: [0.23, 1, 0.32, 1] }}
+              >
+                <strong className="count-value" key={`${label}-${value}`}>
+                  {String(value).padStart(2, '0')}
+                </strong>
+                <span>{label}</span>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+        <div className="count-footer"><span />DESDE EL {CEREMONY_SHORT}<span /></div>
+      </div>
+      <SceneContinue label="Ver los recuerdos" onClick={onNext} />
+    </section>
+  )
+}
+
+function MemoryCarousel({ onNext }: { onNext: () => void }) {
+  const [active, setActive] = useState(0)
+  const reduced = useReducedMotion()
+  const previous = () => setActive((current) => (current + memories.length - 1) % memories.length)
+  const next = () => setActive((current) => (current + 1) % memories.length)
+  return (
+    <section className="memories-section section-shell" aria-labelledby="memories-title">
+      <p className="eyebrow">PEQUEÑOS GRANDES MOMENTOS</p>
+      <h2 id="memories-title" className="section-title">Tu historia, <em>en tres latidos</em></h2>
+      <div className="polaroid" aria-roledescription="carrusel" aria-label="Recuerdos de la vida universitaria de Sofía">
+        <div className="polaroid-photo">
+          <AnimatePresence initial={false}>
+            {memories.map((memory, index) => index === active && (
+              <motion.img
+                key={memory.src}
+                src={memory.src}
+                alt={memory.alt}
+                width={900}
+                height={1200}
+                loading="lazy"
+                decoding="async"
+                initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.04 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
+                transition={{ duration: reduced ? 0.1 : 0.45, ease: [0.23, 1, 0.32, 1] }}
+              />
+            ))}
+          </AnimatePresence>
+          <span className="photo-counter">0{active + 1} / 03</span>
+        </div>
+        <p className="polaroid-caption">{memories[active].caption}</p>
+        <div className="polaroid-controls">
+          <button className="arrow-button" onClick={previous} aria-label="Foto anterior"><ArrowLeft size={17} aria-hidden="true" /></button>
+          <div className="carousel-dots" role="group" aria-label="Seleccionar recuerdo">{memories.map((memory, index) => <button key={memory.src} className={active === index ? 'dot active' : 'dot'} onClick={() => setActive(index)} aria-label={`Ver ${memory.caption}`} aria-pressed={active === index} />)}</div>
+          <button className="arrow-button" onClick={next} aria-label="Foto siguiente"><ArrowRight size={17} aria-hidden="true" /></button>
+        </div>
+      </div>
+      <p className="doctor-tag">Dra. Sofía <span>•</span> Médico Cirujano</p>
+      <SceneContinue label="Leer la carta" onClick={onNext} />
+    </section>
+  )
+}
+
+function Dedication({ onNext, onCelebrate }: { onNext: () => void; onCelebrate: () => void }) {
+  const [opened, setOpened] = useState(false)
+  const reduced = useReducedMotion()
+  const openLetter = () => setOpened(true)
+  return (
+    <section className={`letter-section section-shell ${opened ? 'is-open' : ''}`} aria-labelledby="letter-title">
+      <p className="eyebrow">UNA CARTA DE TU AMIGO</p>
+      <h2 id="letter-title" className="section-title">Lo que no te pude decir<br /><em>en todos estos años</em></h2>
+      <motion.button className={`envelope ${opened ? 'is-open' : ''}`} onClick={openLetter} aria-expanded={opened} aria-label={opened ? 'Carta abierta' : 'Abrir la carta para Sofía'} whileTap={reduced ? undefined : { scale: 0.985 }} tabIndex={opened ? -1 : 0}>
+        <span className="envelope-back" />
+        <span className="envelope-paper" />
+        <span className="envelope-flap" />
+        <span className="envelope-seal"><Heart size={15} fill="currentColor" aria-hidden="true" /><small>{opened ? 'Con cariño' : 'Descúbrela'}</small></span>
+        {!opened && <span className="envelope-prompt">Hay un mensaje para ti <ChevronDown size={13} aria-hidden="true" /></span>}
+      </motion.button>
+      <AnimatePresence initial={false}>
+        {opened && <motion.article className="dedication-card" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: reduced ? 0.15 : 0.28 }}>
+          <p className="eyebrow">MI QUERIDA AMIGA</p>
+          <p className="dedication-copy">Nos conocimos cuando la carrera todavía era una promesa larga, y te vi convertirte en esto: alguien que estudia de noche, que llega cansada y aun así vuelve al hospital al día siguiente. Nunca te escuché quejarte del esfuerzo; solo de no tener más horas para aprender.</p>
+          <p className="dedication-copy">Hoy, <time dateTime={CEREMONY_ISO}>{CEREMONY_LONG}</time>, te llamarán doctora. Y aunque suene a título, para mí es la prueba de todo lo que sostuviste en silencio: los exámenes que te quitaron el sueño, las guardias que te cambiaron el humor y los planes que cancelamos sin rencor.</p>
+          <p className="dedication-copy">Que tu conocimiento sane, que tu humanidad consuele y que nunca te acostumbres al dolor ajeno. Y cuando la carrera pese, acuérdate de que aquí hay un amigo que sigue viéndote igual que el primer día: brillante, terca y un poco insoportable.</p>
+          <p className="letter-signoff">Con cariño de siempre,<br /><strong>Tu amigo</strong></p>
+          <button className="primary-pill celebrate-button" onClick={onCelebrate}>¡Celebrar el logro! <Sparkles size={16} aria-hidden="true" /></button>
+        </motion.article>}
+      </AnimatePresence>
+      <SceneContinue label="Seguir con la sorpresa" onClick={onNext} />
+    </section>
+  )
+}
+
+function CelebrationScene({ onRestart }: { onRestart: () => void }) {
+  return (
+    <section className="closing-section" aria-labelledby="closing-title">
+      <div className="closing-backdrop" />
+      <div className="confetti" aria-hidden="true">{confetti.map((piece, i) => <i key={i} style={{ left: piece.left, animationDelay: piece.delay, animationDuration: piece.duration, width: piece.size, height: piece.size }} />)}</div>
+      <div className="closing-content">
+        <p className="closing-eyebrow">UN ORGULLO QUE NO CABE EN PALABRAS</p>
+        <h2 id="closing-title" className="closing-title">Gracias por<br />dejarme verte<br /><em>llegar</em></h2>
+        <figure className="closing-photo"><img src="/sofia-graduation.png" alt="Sofía celebrando su titulación de Medicina" width={900} height={900} loading="lazy" decoding="async" /><figcaption>{CEREMONY_ROMAN}</figcaption></figure>
+        <p className="voice-heading">Escucha lo que quiero decirte</p>
+        <VoiceNote active />
+        <p className="closing-signature">HECHO CON CARIÑO <span>✦</span> PARA SIEMPRE</p>
+        <button className="scene-continue scene-continue-dark" onClick={onRestart}>Volver a vivirlo <ArrowRight size={16} aria-hidden="true" /></button>
+      </div>
+    </section>
+  )
+}
+
+function VoiceNote({ active }: { active: boolean }) {
+  const [playing, setPlaying] = useState(false)
+  const [elapsed, setElapsed] = useState(0)
+  useEffect(() => {
+    if (!playing) return
+    const interval = window.setInterval(() => setElapsed((current) => {
+      if (current >= 16) { setPlaying(false); return 17 }
+      return current + 1
+    }), 1000)
+    return () => window.clearInterval(interval)
+  }, [playing])
+  useEffect(() => { if (!active) { setPlaying(false); setElapsed(0) } }, [active])
+  const toggle = () => {
+    if (elapsed >= 17) setElapsed(0)
+    setPlaying((current) => !current)
+  }
+  return (
+    <div className="voice-player">
+      <button className="voice-play" onClick={toggle} aria-label={playing ? 'Pausar nota de voz' : 'Reproducir nota de voz'} aria-pressed={playing}>
+        {playing ? <Pause size={17} fill="currentColor" aria-hidden="true" /> : <Play size={17} fill="currentColor" aria-hidden="true" />}
+      </button>
+      <div className={`voice-track ${playing ? 'playing' : ''}`}>
+        <div className="waveform" aria-hidden="true">{Array.from({ length: 34 }, (_, i) => <i key={i} style={{ height: `${8 + ((i * 17 + 11) % 22)}px`, animationDelay: `${(i % 7) * 55}ms` }} />)}</div>
+        <div className="voice-progress" role="progressbar" aria-label="Progreso de la nota de voz" aria-valuemin={0} aria-valuemax={17} aria-valuenow={elapsed}><span style={{ width: `${(elapsed / 17) * 100}%` }} /></div>
+      </div>
+      <span className="voice-time">0:{String(elapsed ? 17 - elapsed : 17).padStart(2, '0')}</span>
+      <AudioLines className="voice-icon" size={16} aria-hidden="true" />
+    </div>
+  )
+}
+
+function FloatingDetails() {
+  return <div className="floating-details" aria-hidden="true"><span className="float-stethoscope"><Stethoscope size={18} /></span><span className="float-sparkle">✧</span><span className="float-sparkle second">✦</span></div>
+}
+
+function SceneContinue({ label, onClick }: { label: string; onClick: () => void }) {
+  return <button className="scene-continue" onClick={onClick}>{label}<ArrowRight size={16} aria-hidden="true" /></button>
+}
+
+const sceneCount = 7
+const sceneNames = ['Portada', 'Retrato', 'La canción', 'El tiempo', 'Recuerdos', 'La carta', 'Celebración']
+
+export default function GraduationLetter() {
+  const [scene, setScene] = useState(0)
+  const reduced = useReducedMotion()
+  const moveTo = (index: number) => setScene(Math.max(0, Math.min(sceneCount - 1, index)))
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.target instanceof HTMLButtonElement) return
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); setScene((current) => Math.min(sceneCount - 1, current + 1)) }
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); setScene((current) => Math.max(0, current - 1)) }
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
+
+  const content = [
+    <Cover key="cover" onNext={() => moveTo(1)} />,
+    <Portrait key="portrait" onNext={() => moveTo(2)} />,
+    <Song key="song" onNext={() => moveTo(3)} />,
+    <MilestoneClock key="milestone" onNext={() => moveTo(4)} />,
+    <MemoryCarousel key="memories" onNext={() => moveTo(5)} />,
+    <Dedication key="letter" onNext={() => moveTo(6)} onCelebrate={() => moveTo(6)} />,
+    <CelebrationScene key="celebration" onRestart={() => moveTo(0)} />,
+  ][scene]
+
+  return (
+    <main className="gift-page">
+      <div className="gift-column">
+        <FloatingDetails />
+        <p className="visually-hidden" aria-live="polite" aria-atomic="true">
+          {`Escena ${scene + 1} de ${sceneCount}: ${sceneNames[scene]}`}
+        </p>
+        <div className="presentation-stage">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div key={scene} className="presentation-scene" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.99 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduced ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.99 }} transition={{ duration: reduced ? 0.12 : 0.42, ease: [0.22, 1, 0.36, 1] }}>
+              {scene > 0 && <button className="scene-back" type="button" onClick={() => moveTo(scene - 1)} aria-label="Escena anterior"><ArrowLeft size={18} aria-hidden="true" /></button>}
+              {content}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </main>
+  )
+}
