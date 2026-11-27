@@ -20,6 +20,7 @@ function Cover({ onNext }: { onNext: () => void }) {
       </div>
       <p className="eyebrow">{CEREMONY_LABEL}</p>
       <h1 id="cover-title" className="display-title">Para la amiga<br />que hoy será doctora</h1>
+      <p className="cover-name">Dra. Lorena V. Escobar</p>
       <p className="cover-copy">Años de guardias, apuntes y cafés<br />que no alcanzaron. Hoy te titulas.</p>
       <button className="primary-pill" onClick={onNext}>Abrir la carta <ArrowRight size={16} aria-hidden="true" /></button>
       <div className="cover-signature"><span>con orgullo y cariño</span><strong>de tu amigo</strong></div>
@@ -35,7 +36,7 @@ function Portrait({ onNext }: { onNext: () => void }) {
     <section id="retrato" className="portrait-section section-shell">
       <p className="eyebrow date-label">{CEREMONY_LONG}</p>
       <figure className="portrait-frame">
-        <img src="/quirofano.jpeg" alt="Sofía y su amigo con bata quirúrgica y mascarilla en el quirófano" width={1600} height={1200} fetchPriority="high" />
+        <img src="/quirofano.jpeg" alt="Lorena y su amigo con bata quirúrgica y mascarilla en el quirófano" width={1600} height={1200} fetchPriority="high" />
         <span className="portrait-number">01 / 05</span>
       </figure>
       <p className="photo-caption">La bata que soñaste antes<br />de saber cuánto costaría</p>
@@ -218,7 +219,7 @@ function Dedication({ onRestart }: { onRestart: () => void }) {
     <section className={`letter-section section-shell ${opened ? 'is-open' : ''}`} aria-labelledby="letter-title">
       <p className="eyebrow">UNA CARTA DE TU AMIGO</p>
       <h2 id="letter-title" className="section-title">Lo que no te pude decir<br /><em>en todos estos años</em></h2>
-      <motion.button className={`envelope ${opened ? 'is-open' : ''}`} onClick={openLetter} aria-expanded={opened} aria-label={opened ? 'Carta abierta' : 'Abrir la carta para Sofía'} whileTap={reduced ? undefined : { scale: 0.985 }} tabIndex={opened ? -1 : 0}>
+      <motion.button className={`envelope ${opened ? 'is-open' : ''}`} onClick={openLetter} aria-expanded={opened} aria-label={opened ? 'Carta abierta' : 'Abrir la carta para Lorena'} whileTap={reduced ? undefined : { scale: 0.985 }} tabIndex={opened ? -1 : 0}>
         <span className="envelope-back" />
         <span className="envelope-paper" />
         <span className="envelope-flap" />
