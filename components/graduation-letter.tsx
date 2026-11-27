@@ -19,9 +19,9 @@ function Cover({ onNext }: { onNext: () => void }) {
         <div className="emblem-ring"><Stethoscope size={30} strokeWidth={1.15} /><span className="emblem-star">✳</span></div>
       </div>
       <p className="eyebrow">{CEREMONY_LABEL}</p>
-      <h1 id="cover-title" className="display-title">Para la amiga<br />que hoy será doctora</h1>
+      <h1 id="cover-title" className="display-title">Para la amiga<br />que hoy es doctora</h1>
       <p className="cover-name">Dra. Lorena V. Escobar</p>
-      <p className="cover-copy">Años de guardias, apuntes y cafés<br />que no alcanzaron. Hoy te titulas.</p>
+      <p className="cover-copy">Años de guardias, apuntes y cafés<br />que no alcanzaron. Hoy te titulaste.</p>
       <button className="primary-pill" onClick={onNext}>Abrir la carta <ArrowRight size={16} aria-hidden="true" /></button>
       <div className="cover-signature"><span>con orgullo y cariño</span><strong>de tu amigo</strong></div>
       <span className="float-mark mark-cap" aria-hidden="true">✧</span>

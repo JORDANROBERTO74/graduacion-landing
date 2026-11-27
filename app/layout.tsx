@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Para la amiga que hoy será doctora | Dra. Lorena V. Escobar',
+  title: 'Para la amiga que hoy es doctora | Dra. Lorena V. Escobar',
   description: 'Una carta digital para celebrar la titulación de Medicina de Lorena: 27 de noviembre de 2026, 9:00 a. m.',
   generator: 'v0.app',
   icons: {
