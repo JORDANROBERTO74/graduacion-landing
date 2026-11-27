@@ -41,7 +41,7 @@ function Portrait({ onNext }: { onNext: () => void }) {
       </figure>
       <p className="photo-caption">La bata que soñaste antes<br />de saber cuánto costaría</p>
       <span className="tiny-rule" aria-hidden="true" />
-      <SceneContinue label="Seguir la historia" onClick={onNext} />
+      <SceneContinue label="Leer la carta" onClick={onNext} />
     </section>
   )
 }
@@ -206,7 +206,7 @@ function MilestoneClock({ onNext }: { onNext: () => void }) {
         </div>
         <div className="count-footer"><span />DESDE EL {CEREMONY_SHORT}<span /></div>
       </div>
-      <SceneContinue label="Leer la carta" onClick={onNext} />
+      <SceneContinue label="Seguir la historia" onClick={onNext} />
     </section>
   )
 }
@@ -249,7 +249,7 @@ function SceneContinue({ label, onClick }: { label: string; onClick: () => void 
 }
 
 const sceneCount = 5
-const sceneNames = ['Portada', 'Retrato', 'La canción', 'El tiempo', 'La carta']
+const sceneNames = ['Portada', 'La canción', 'El tiempo', 'Retrato', 'La carta']
 
 export default function GraduationLetter() {
   const [scene, setScene] = useState(0)
@@ -268,9 +268,9 @@ export default function GraduationLetter() {
 
   const content = [
     <Cover key="cover" onNext={() => moveTo(1)} />,
-    <Portrait key="portrait" onNext={() => moveTo(2)} />,
-    <Song key="song" onNext={() => moveTo(3)} />,
-    <MilestoneClock key="milestone" onNext={() => moveTo(4)} />,
+    <Song key="song" onNext={() => moveTo(2)} />,
+    <MilestoneClock key="milestone" onNext={() => moveTo(3)} />,
+    <Portrait key="portrait" onNext={() => moveTo(4)} />,
     <Dedication key="letter" onRestart={() => moveTo(0)} />,
   ][scene]
 
