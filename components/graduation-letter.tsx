@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { ArrowLeft, ArrowRight, AudioLines, CassetteTape, ChevronDown, Clock3, Pause, Play, Stethoscope, Heart, Sparkles } from 'lucide-react'
+import { ArrowLeft, ArrowRight, CassetteTape, ChevronDown, Clock3, Stethoscope, Heart } from 'lucide-react'
 
 /* Una sola fuente de verdad para la ceremonia: 27 de noviembre de 2026, 9:00 a. m. */
 const CEREMONY = { year: 2026, month: 10, day: 27, hour: 9, minute: 0 } as const
@@ -11,19 +11,6 @@ const CEREMONY_ISO = '2026-11-27T09:00:00'
 const CEREMONY_SHORT = '27.11.2026 · 09:00'
 const CEREMONY_ROMAN = '27 · XI · MMXXVI'
 const CEREMONY_LONG = '27 de noviembre de 2026 · 9:00 a. m.'
-
-const memories = [
-  { src: '/sofia-internship.png', alt: 'Sofía durante su internado rotatorio', caption: 'Internado rotatorio' },
-  { src: '/sofia-defense.png', alt: 'Sofía en la defensa de grado', caption: 'Defensa de grado' },
-  { src: '/sofia-whitecoat.png', alt: 'Sofía con su primera bata blanca', caption: 'La bata blanca' },
-]
-
-const confetti = Array.from({ length: 22 }, (_, index) => ({
-  left: `${(index * 37 + 11) % 100}%`,
-  delay: `${(index % 8) * 0.65}s`,
-  duration: `${7 + (index % 5)}s`,
-  size: `${3 + (index % 3)}px`,
-}))
 
 function Cover({ onNext }: { onNext: () => void }) {
   return (
@@ -50,7 +37,7 @@ function Portrait({ onNext }: { onNext: () => void }) {
       <p className="eyebrow date-label">{CEREMONY_LONG}</p>
       <figure className="portrait-frame">
         <img src="/sofia-graduation.png" alt="Sofía, recién graduada de Medicina, con su bata blanca, estetoscopio y birrete" width={900} height={1200} fetchPriority="high" />
-        <span className="portrait-number">01 / 07</span>
+        <span className="portrait-number">01 / 05</span>
       </figure>
       <p className="photo-caption">La bata que soñaste antes<br />de saber cuánto costaría</p>
       <span className="tiny-rule" aria-hidden="true" />
@@ -219,55 +206,12 @@ function MilestoneClock({ onNext }: { onNext: () => void }) {
         </div>
         <div className="count-footer"><span />DESDE EL {CEREMONY_SHORT}<span /></div>
       </div>
-      <SceneContinue label="Ver los recuerdos" onClick={onNext} />
-    </section>
-  )
-}
-
-function MemoryCarousel({ onNext }: { onNext: () => void }) {
-  const [active, setActive] = useState(0)
-  const reduced = useReducedMotion()
-  const previous = () => setActive((current) => (current + memories.length - 1) % memories.length)
-  const next = () => setActive((current) => (current + 1) % memories.length)
-  return (
-    <section className="memories-section section-shell" aria-labelledby="memories-title">
-      <p className="eyebrow">PEQUEÑOS GRANDES MOMENTOS</p>
-      <h2 id="memories-title" className="section-title">Tu historia, <em>en tres latidos</em></h2>
-      <div className="polaroid" aria-roledescription="carrusel" aria-label="Recuerdos de la vida universitaria de Sofía">
-        <div className="polaroid-photo">
-          <AnimatePresence initial={false}>
-            {memories.map((memory, index) => index === active && (
-              <motion.img
-                key={memory.src}
-                src={memory.src}
-                alt={memory.alt}
-                width={900}
-                height={1200}
-                loading="lazy"
-                decoding="async"
-                initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.04 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 1.02 }}
-                transition={{ duration: reduced ? 0.1 : 0.45, ease: [0.23, 1, 0.32, 1] }}
-              />
-            ))}
-          </AnimatePresence>
-          <span className="photo-counter">0{active + 1} / 03</span>
-        </div>
-        <p className="polaroid-caption">{memories[active].caption}</p>
-        <div className="polaroid-controls">
-          <button className="arrow-button" onClick={previous} aria-label="Foto anterior"><ArrowLeft size={17} aria-hidden="true" /></button>
-          <div className="carousel-dots" role="group" aria-label="Seleccionar recuerdo">{memories.map((memory, index) => <button key={memory.src} className={active === index ? 'dot active' : 'dot'} onClick={() => setActive(index)} aria-label={`Ver ${memory.caption}`} aria-pressed={active === index} />)}</div>
-          <button className="arrow-button" onClick={next} aria-label="Foto siguiente"><ArrowRight size={17} aria-hidden="true" /></button>
-        </div>
-      </div>
-      <p className="doctor-tag">Dra. Sofía <span>•</span> Médico Cirujano</p>
       <SceneContinue label="Leer la carta" onClick={onNext} />
     </section>
   )
 }
 
-function Dedication({ onNext, onCelebrate }: { onNext: () => void; onCelebrate: () => void }) {
+function Dedication({ onRestart }: { onRestart: () => void }) {
   const [opened, setOpened] = useState(false)
   const reduced = useReducedMotion()
   const openLetter = () => setOpened(true)
@@ -289,60 +233,10 @@ function Dedication({ onNext, onCelebrate }: { onNext: () => void; onCelebrate: 
           <p className="dedication-copy">Hoy, <time dateTime={CEREMONY_ISO}>{CEREMONY_LONG}</time>, te llamarán doctora. Y aunque suene a título, para mí es la prueba de todo lo que sostuviste en silencio: los exámenes que te quitaron el sueño, las guardias que te cambiaron el humor y los planes que cancelamos sin rencor.</p>
           <p className="dedication-copy">Que tu conocimiento sane, que tu humanidad consuele y que nunca te acostumbres al dolor ajeno. Y cuando la carrera pese, acuérdate de que aquí hay un amigo que sigue viéndote igual que el primer día: brillante, terca y un poco insoportable.</p>
           <p className="letter-signoff">Con cariño de siempre,<br /><strong>Tu amigo</strong></p>
-          <button className="primary-pill celebrate-button" onClick={onCelebrate}>¡Celebrar el logro! <Sparkles size={16} aria-hidden="true" /></button>
+          <button className="primary-pill celebrate-button" onClick={onRestart}>Volver a vivirlo <ArrowRight size={16} aria-hidden="true" /></button>
         </motion.article>}
       </AnimatePresence>
-      <SceneContinue label="Seguir con la sorpresa" onClick={onNext} />
     </section>
-  )
-}
-
-function CelebrationScene({ onRestart }: { onRestart: () => void }) {
-  return (
-    <section className="closing-section" aria-labelledby="closing-title">
-      <div className="closing-backdrop" />
-      <div className="confetti" aria-hidden="true">{confetti.map((piece, i) => <i key={i} style={{ left: piece.left, animationDelay: piece.delay, animationDuration: piece.duration, width: piece.size, height: piece.size }} />)}</div>
-      <div className="closing-content">
-        <p className="closing-eyebrow">UN ORGULLO QUE NO CABE EN PALABRAS</p>
-        <h2 id="closing-title" className="closing-title">Gracias por<br />dejarme verte<br /><em>llegar</em></h2>
-        <figure className="closing-photo"><img src="/sofia-graduation.png" alt="Sofía celebrando su titulación de Medicina" width={900} height={900} loading="lazy" decoding="async" /><figcaption>{CEREMONY_ROMAN}</figcaption></figure>
-        <p className="voice-heading">Escucha lo que quiero decirte</p>
-        <VoiceNote active />
-        <p className="closing-signature">HECHO CON CARIÑO <span>✦</span> PARA SIEMPRE</p>
-        <button className="scene-continue scene-continue-dark" onClick={onRestart}>Volver a vivirlo <ArrowRight size={16} aria-hidden="true" /></button>
-      </div>
-    </section>
-  )
-}
-
-function VoiceNote({ active }: { active: boolean }) {
-  const [playing, setPlaying] = useState(false)
-  const [elapsed, setElapsed] = useState(0)
-  useEffect(() => {
-    if (!playing) return
-    const interval = window.setInterval(() => setElapsed((current) => {
-      if (current >= 16) { setPlaying(false); return 17 }
-      return current + 1
-    }), 1000)
-    return () => window.clearInterval(interval)
-  }, [playing])
-  useEffect(() => { if (!active) { setPlaying(false); setElapsed(0) } }, [active])
-  const toggle = () => {
-    if (elapsed >= 17) setElapsed(0)
-    setPlaying((current) => !current)
-  }
-  return (
-    <div className="voice-player">
-      <button className="voice-play" onClick={toggle} aria-label={playing ? 'Pausar nota de voz' : 'Reproducir nota de voz'} aria-pressed={playing}>
-        {playing ? <Pause size={17} fill="currentColor" aria-hidden="true" /> : <Play size={17} fill="currentColor" aria-hidden="true" />}
-      </button>
-      <div className={`voice-track ${playing ? 'playing' : ''}`}>
-        <div className="waveform" aria-hidden="true">{Array.from({ length: 34 }, (_, i) => <i key={i} style={{ height: `${8 + ((i * 17 + 11) % 22)}px`, animationDelay: `${(i % 7) * 55}ms` }} />)}</div>
-        <div className="voice-progress" role="progressbar" aria-label="Progreso de la nota de voz" aria-valuemin={0} aria-valuemax={17} aria-valuenow={elapsed}><span style={{ width: `${(elapsed / 17) * 100}%` }} /></div>
-      </div>
-      <span className="voice-time">0:{String(elapsed ? 17 - elapsed : 17).padStart(2, '0')}</span>
-      <AudioLines className="voice-icon" size={16} aria-hidden="true" />
-    </div>
   )
 }
 
@@ -354,8 +248,8 @@ function SceneContinue({ label, onClick }: { label: string; onClick: () => void 
   return <button className="scene-continue" onClick={onClick}>{label}<ArrowRight size={16} aria-hidden="true" /></button>
 }
 
-const sceneCount = 7
-const sceneNames = ['Portada', 'Retrato', 'La canción', 'El tiempo', 'Recuerdos', 'La carta', 'Celebración']
+const sceneCount = 5
+const sceneNames = ['Portada', 'Retrato', 'La canción', 'El tiempo', 'La carta']
 
 export default function GraduationLetter() {
   const [scene, setScene] = useState(0)
@@ -377,9 +271,7 @@ export default function GraduationLetter() {
     <Portrait key="portrait" onNext={() => moveTo(2)} />,
     <Song key="song" onNext={() => moveTo(3)} />,
     <MilestoneClock key="milestone" onNext={() => moveTo(4)} />,
-    <MemoryCarousel key="memories" onNext={() => moveTo(5)} />,
-    <Dedication key="letter" onNext={() => moveTo(6)} onCelebrate={() => moveTo(6)} />,
-    <CelebrationScene key="celebration" onRestart={() => moveTo(0)} />,
+    <Dedication key="letter" onRestart={() => moveTo(0)} />,
   ][scene]
 
   return (
